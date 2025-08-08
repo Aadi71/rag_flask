@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # The Flask application service
   flask-app:
     build:
       context: .
@@ -12,7 +9,6 @@ services:
       - "5001:5000"
     volumes:
       - ./app:/app/app 
-      - ./modelfile:/modelfile  # Mounts the Modelfile for the Flask app to use
     environment:
       - ANONYMIZED_TELEMETRY=False
       - FLASK_ENV=production
@@ -23,7 +19,7 @@ services:
       - MONGO_DB_NAME=rag_logs
     depends_on:
       ollama:
-        condition: service_healthy # Waits for the Ollama server to be ready
+        condition: service_healthy
       chromadb:
         condition: service_started
       mongodb:
@@ -31,9 +27,8 @@ services:
     networks:
       - rag_network
 
-  # Ollama service for the custom LLM
   ollama:
-    image: ollama/ollama:latest # Uses the standard Ollama image
+    image: ollama/ollama:latest
     container_name: rag_ollama
     restart: unless-stopped
     ports:
@@ -44,12 +39,11 @@ services:
       - rag_network
     healthcheck:
       test: ["CMD", "ollama", "list"]
-      interval: 10s
-      timeout: 5s
+      interval: 15s
+      timeout: 10s
       retries: 5
       start_period: 30s
 
-  # ChromaDB service for vector storage
   chromadb:
     image: chromadb/chroma:0.5.0
     container_name: rag_chromadb
@@ -61,7 +55,6 @@ services:
     networks:
       - rag_network
 
-  # MongoDB service for query logging
   mongodb:
     image: mongo:latest
     container_name: rag_mongodb
@@ -76,7 +69,6 @@ services:
     networks:
       - rag_network
 
-  # Mongo Express for a web-based DB interface
   mongo-express:
     image: mongo-express:latest
     container_name: rag_mongo_express
@@ -92,13 +84,11 @@ services:
     networks:
       - rag_network
 
-# Define persistent volumes
 volumes:
   ollama_data:
   chroma_data:
   mongo_data:
 
-# Define the network for services to communicate
 networks:
   rag_network:
     driver: bridge

@@ -6,15 +6,16 @@ requests
 # Data Validation
 pydantic
 
-# LangChain Core for RAG
-langchain
+# LangChain - Use new packages
 langchain-community
 langchain-core
+langchain-ollama
+langchain-chroma
 
 # PDF Processing
 pypdf
 
-# LLM and Vector DB Clients
+# LLM and Vector DB Clients (Locked Versions)
 ollama>=0.2.0
 chromadb==0.5.0
 
@@ -23,4 +24,6 @@ pymongo
 
 # API Documentation
 flask-swagger-ui
+
+# Pin NumPy to a version compatible with ChromaDB 0.5.0
 numpy<2.0

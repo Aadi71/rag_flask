@@ -2,7 +2,7 @@ import os
 
 # Ollama Configuration
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL_NAME = "academic-qa" # The name we'll give our custom model
+OLLAMA_MODEL_NAME = "mistral" # The name we'll give our custom model
 
 # ChromaDB Configuration
 CHROMA_HOST = os.getenv("CHROMA_HOST", "localhost")
