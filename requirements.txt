@@ -1,0 +1,26 @@
+# Flask and Server
+flask
+gunicorn
+requests
+
+# Data Validation
+pydantic
+
+# LangChain Core for RAG
+langchain
+langchain-community
+langchain-core
+
+# PDF Processing
+pypdf
+
+# LLM and Vector DB Clients
+ollama>=0.2.0
+chromadb==0.5.0
+
+# Database Client
+pymongo
+
+# API Documentation
+flask-swagger-ui
+numpy<2.0

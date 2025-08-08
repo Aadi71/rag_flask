@@ -1,0 +1,101 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Academic RAG API",
+    "description": "An API to upload research papers and ask questions about their content using a RAG pipeline.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5001",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/papers": {
+      "post": {
+        "summary": "Upload PDF Papers",
+        "description": "Upload one or more PDF files to be processed and stored in the vector database.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "files",
+            "type": "file",
+            "required": true,
+            "description": "The PDF files to upload."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Files processed successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string" },
+                "message": { "type": "string" },
+                "processed_documents": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/query": {
+      "post": {
+        "summary": "Query Documents",
+        "description": "Ask a natural language question about the content of the uploaded papers.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QueryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "schema": {
+              "$ref": "#/definitions/AnswerResponse"
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "QueryRequest": {
+      "type": "object",
+      "required": ["question"],
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "The natural language question."
+        }
+      }
+    },
+    "AnswerResponse": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "description": "The synthesized answer."
+        },
+        "sources": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of source document names."
+        }
+      }
+    }
+  }
+}
